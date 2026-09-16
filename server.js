@@ -15,8 +15,13 @@ app.use(cors());
 app.use(express.json());
 
 
+const os = require('os');
+
+// Если операционная система НЕ Windows (то есть Linux на Render) — включаем интернет-базу
+const isProduction = os.platform() !== 'win32';
+
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: 'x92017w9.beget.tech',
   user: 'x92017w9',        
   password: '228355480DenutUtkin$',        
   database: 'x92017w9_prosmot' 
