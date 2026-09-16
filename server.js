@@ -1,31 +1,29 @@
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql2'); 
-
+const { Pool } = require('pg'); // Подключаем PostgreSQL вместо MySQL
 
 const passport = require('passport');
 const YandexStrategy = require('passport-yandex').Strategy;
 
-
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-
 app.use(express.json());
 
-
-const os = require('os');
-
-// Если операционная система НЕ Windows (то есть Linux на Render) — включаем интернет-базу
-const isProduction = os.platform() !== 'win32';
-
-const connection = mysql.createConnection({
-  host: 'x92017w9.beget.tech',
-  user: 'x92017w9',        
-  password: '228355480DenutUtkin$',        
-  database: 'x92017w9_prosmot' 
+// ВЕЧНАЯ И БЕСПЛАТНАЯ БАЗА ПРЯМО НА РЕНДЕРЕ
+const pool = new Pool({
+  // Сюда ты вставишь строчку External Database URL, которую сейчас выдаст Render
+  connectionString: 'postgresql://admin:E65bOO8fOPdarjwD5TkA26bbglXTJSly@dpg-dalda2f40ujc73dk78q0-a.frankfurt-postgres.render.com/prosmotr',
+  ssl: { rejectUnauthorized: false } // Обязательно для защиты связи в облаке
 });
+
+
+// Автоматический порт для Рендера (на Рендере подставится 10000)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Сервер API запущен на порту ${PORT}`);
+});
+
 
 
 passport.use(new YandexStrategy({
